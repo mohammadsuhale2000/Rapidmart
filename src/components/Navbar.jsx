@@ -8,6 +8,7 @@ import axios from "axios";
 import { signInSuccess, signOut } from "@/store/userSlice";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
+import CartDrawer from "@/components/ui/CartDrawer"; // Import the CartDrawer component
 
 const categories = [
   "All Categories",
@@ -23,6 +24,7 @@ const Navbar = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All Categories");
   const [items, setItems] = useState(0);
+  const [isCartOpen, setIsCartOpen] = useState(false); // State for Cart Drawer
 
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -88,7 +90,7 @@ const Navbar = () => {
 
             <form onSubmit={handleSubmit}>
               <input
-                type="text"
+                type="search"
                 placeholder="Search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -111,21 +113,25 @@ const Navbar = () => {
             {currentUser ? <CgProfile size={30} color="black" /> : "Login"}
           </Link>
 
-          <Link href="/cart">
-            <div className="cursor-pointer flex items-center justify-center relative">
-              <AiOutlineShoppingCart size={30} />
-              {items > 0 && (
-                <Badge
-                  variant="secondary"
-                  className="w-4 h-4 flex items-center justify-center text-xs absolute top-0 right-0"
-                >
-                  {items}
-                </Badge>
-              )}
-            </div>
-          </Link>
+          <div
+            onClick={() => setIsCartOpen(true)}
+            className="cursor-pointer flex items-center justify-center relative"
+          >
+            <AiOutlineShoppingCart size={30} />
+            {items > 0 && (
+              <Badge
+                variant="secondary"
+                className="w-4 h-4 flex items-center justify-center text-xs absolute top-0 right-0"
+              >
+                {items}
+              </Badge>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Cart Drawer */}
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </nav>
   );
 };
