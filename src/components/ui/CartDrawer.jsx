@@ -27,6 +27,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
           className="cursor-pointer"
           onClick={onClose}
         />
+        {/* comment */}
       </div>
 
       {/* Cart Items */}
